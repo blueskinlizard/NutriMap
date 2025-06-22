@@ -138,3 +138,5 @@ dist
 # Raw data files (extremely large for github with our ~100+ columns)
 # We will keep our processed data given column/useless data pruning
 data/raw/
+
+.env
