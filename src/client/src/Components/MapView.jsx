@@ -104,6 +104,31 @@ const MapView = () => {
         setFilteredGeojsons([]);
         loadGeoJson(state_abbrev_to_fips[e.target.stateSearchInput.value]);
     }
+    const tractStyle = {
+        color: '#3388ff',
+        weight: 1,
+        fillOpacity: 0.5
+    };
+
+    const onEachTract = (feature, layer) => {
+        layer.on({
+            click: () => {
+                const tractId = feature.properties.GEOID || 'Unknown';
+                const name = feature.properties.NAME || '';
+                alert(`Clicked on Tract ${tractId} ${name ? `(${name})` : ''}`);
+            },
+            mouseover: () => {
+            layer.setStyle({
+                weight: 2,
+                fillOpacity: 0.8
+            });
+            },
+            mouseout: () => {
+                layer.setStyle(tractStyle);
+            }
+        });
+    };
+    
     return (
         <div className="map-container" style={{ 
             height: '100vh', 
@@ -129,7 +154,7 @@ const MapView = () => {
                 attribution="&copy; OpenStreetMap contributors"
                 />
                 {filteredGeojsons.map((geojson, idx) => (
-                    <GeoJSON key={idx} data={geojson} />
+                    <GeoJSON key={idx} data={geojson} onEachFeature={onEachTract} style={tractStyle}/>
                 ))}
                 
             </MapContainer>
