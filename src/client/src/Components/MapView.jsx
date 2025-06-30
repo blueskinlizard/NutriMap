@@ -165,8 +165,12 @@ const MapView = () => {
 
     const handleSliderCommit = () => {
         const selectedYear = [2010, 2015, 2019][sliderIndex];
-        setCurrentYear(selectedYear);
-        setColorLoading(true);
+        if(currentYear != selectedYear){
+            setCurrentYear(selectedYear);
+            setColorLoading(true);
+
+        }
+        else{return; }
     };
 
     
