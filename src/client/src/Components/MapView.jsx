@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
+import Papa from 'papaparse';
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -11,17 +12,12 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
+
 const geojsonFiles = import.meta.glob('../../../../data/geojsondata/GIS_GEOJSON_CENSUS_TRACTS/*.json', {query: '?json'});
+const colorSettingFiles = import.meta.glob('../../../../data/processed/color_settings/*.csv', { as: 'raw' });
+
+
 // Don't criticize my import parths ok 
-const classificationLabels2019 = import.meta.glob('../../../../data/processed/clustered_atlas_labels_2019.csv');
-const classificationLabels2015 = import.meta.glob('../../../../data/processed/clustered_atlas_labels_2015.csv');
-const classificationLabels2010 = import.meta.glob('../../../../data/processed/clustered_atlas_labels_2010.csv');
-
-const simpleLabels2019 = import.meta.glob('../../../../data/processed/random_forest_labels_2019.csv');
-const simpleLabels2015 = import.meta.glob('../../../../data/processed/random_forest_labels_2015.csv');
-const simpleLabels2010 = import.meta.glob('../../../../data/processed/random_forest_labels_2010.csv');
-
-const predictionLabels2025 = import.meta.glob('../../../../data/processed/predicted_2025_food_desert_values.csv');
 
 const state_abbrev_to_fips = MapData.state_abbrev_to_fips;
 
@@ -37,14 +33,62 @@ const US_BOUNDS = [
 
 const MapView = () => {
     const [currentYear, setCurrentYear] = useState(2019);
+    const [colorLoading, setColorLoading] = useState(true)
+    const [tractColors, setTractColors] = useState({});
     const [selectedTract, setSelectedTract] = useState(null);
+    const [loadingProgress, setLoadingProgress] = useState(0);
     const [loading, setLoading] = useState(true);
     const [filteredGeojsons, setFilteredGeojsons] = useState([]);
 
+    const fetchTractColor = async(stateId, year) =>{
+        try {
+            const allColorData = [];
+            for (const path in colorSettingFiles) {
+                const filename = path.split('/').pop();
+                if (filename.startsWith(year.toString())) {
+                    const csvRaw = await colorSettingFiles[path]();
+                    const parsed = Papa.parse(csvRaw, {
+                        header: true,
+                        skipEmptyLines: true,
+                        dynamicTyping: false
+                    });
+
+                parsed.data.forEach(row => {
+                    let CensusTract = row.CensusTract || row['CensusTract'];
+                    const Color = row.Color || row['Color'];
+                    if (typeof CensusTract === 'number') {
+                        CensusTract = CensusTract.toString().padStart(11, '0');
+                    } else if (typeof CensusTract === 'string') {
+                        CensusTract = CensusTract.padStart(11, '0');
+                    }
+                    if (CensusTract.startsWith(stateId)) {
+                        allColorData.push({
+                            CensusTract,
+                            Color
+                        });
+                    }
+                });
+
+                }
+            }
+            const tractColorMap = {};
+            allColorData.forEach(({ CensusTract, Color }) => {
+                const CensusTractString = String(CensusTract).padStart(11, '0');
+                tractColorMap[CensusTractString] = Color;
+            })
+            setTractColors(tractColorMap);
+
+        }catch (error) {
+            console.error('Error loading color file:', error);
+        }finally {
+            setColorLoading(false);
+        }
+    }
+
     useEffect(() => {
         loadGeoJson('48');
+        fetchTractColor('48', currentYear);
     }, []);
-
 
     const loadGeoJson = async (fips) => {
         try {
@@ -61,28 +105,39 @@ const MapView = () => {
             setFilteredGeojsons(allLoadedData);
         } catch (error) {
             console.error('Error loading GeoJSON file:', error);
-        } finally {
-            setLoading(false);
+        }finally{
+            setLoading(false)
         }
     };
-    if(loading){
+    if(loading || colorLoading){
         return <h1>Loading map data...</h1>
     }
     const handleForm = (e) =>{
         e.preventDefault();
         console.log("User inputted value: "+e.target.stateSearchInput.value)
-        if (!state_abbrev_to_fips[e.target.stateSearchInput.value]) {
-            alert("Invalid state abbreviation (use 2-letter code, e.g., TX)");
+        if (!state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()]) {
+            alert("Invalid state abbreviation (use 2-letter code, e.g., TX.)");
+            return;
+        }
+        if(e.target.stateSearchInput.value == "AK"){
+            alert("Alaska's tracts do not work with this model.");
             return;
         }
         setLoading(true);
         setFilteredGeojsons([]);
-        loadGeoJson(state_abbrev_to_fips[e.target.stateSearchInput.value]);
+        loadGeoJson(state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()]);
+        setTractColors([]);
+        fetchTractColor(state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()].toString(), currentYear)
     }
-    const tractStyle = {
-        color: '#3388ff',
-        weight: 1,
-        fillOpacity: 0.5
+    const getTractStyle = (feature) => {
+        const tractId = String(feature.properties.GEOID).padStart(11, '0');
+        const fillColor = tractColors[tractId] || '#cccccc'; //Fallback color
+        return {
+            color: '#333',
+            weight: 1,
+            fillOpacity: 0.6,
+            fillColor
+        };
     };
 
     const onEachTract = (feature, layer) => {
@@ -100,11 +155,15 @@ const MapView = () => {
                 fillOpacity: 0.8
             });
             },
-            mouseout: () => {
-                layer.setStyle(tractStyle);
+            mouseout: (e) => {
+                const layer = e.target;
+                const feature = layer.feature;
+                layer.setStyle(getTractStyle(feature));
             }
         });
     };
+
+    
     
     return (
         <div>
@@ -132,11 +191,11 @@ const MapView = () => {
                 attribution="&copy; OpenStreetMap contributors"
                 />
                 {filteredGeojsons.map((geojson, idx) => (
-                    <GeoJSON key={idx} data={geojson} onEachFeature={onEachTract} style={tractStyle}/>
+                    <GeoJSON key={idx} data={geojson} onEachFeature={onEachTract} style={getTractStyle}/>
                 ))}
                     
             </MapContainer>
-            {loading && (
+            {(loading || colorLoading) && (
                 <div className="loading-overlay">
                     <p>Loading map data...</p>
                 </div>

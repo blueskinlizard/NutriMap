@@ -7,40 +7,26 @@ const map_values_2015  = MapData.cluster_map_2015;
 const map_values_2010  = MapData.cluster_map_2010;
 const prediction_to_annotation = MapData.prediction_to_annotation;
 
+const simple_to_annotation = MapData.simple_to_annotation;
+const cluster_color_map = MapData.clusterColorMap;
+const year_to_index = MapData.year_to_index;
+
 export default function TractInfo({ tractID }) {
     const [loading, setLoading] = useState(true);
     const [listedData, setListedData] = useState([])
-
-    const fetchTractData = async (tractID) => {
-        const modules = await Promise.all(Object.values(csvFiles).map(importFn => importFn()));
-        const allData = modules.map(rawCsv => {
-            const results = Papa.parse(rawCsv, { header: true });
-            return results.data.filter(row => 
-                String(row.CensusTract).trim() === String(tractID).trim()
-            );
-        });
-        const flattened = allData.flat();
-        setListedData(flattened);
-        setLoading(false);
-        // const cluster2010 = allData.flat[0];
-        // const cluster2015 = allData.flat[1];
-        // const cluster2019 = allData.flat[2];
-        // const predictedCluster = allData.flat[3];
-        // const simplifiedCluster2010 = allData.flat[4];
-        // const simplifiedCluster2015 = allData.flat[5];
-        // const simplifiedCluster2019 = allData.flat[6];
-        setLoading(false);
-    };
-
     useEffect(() => {
-        console.log("Spawned tractinfo for tractID: "+tractID)
+        console.log("Spawned tractinfo for tractID: "+tractID);
         if (tractID) {
             setLoading(true);
-            fetchTractData(tractID).finally(() => setLoading(false));
+            (async () => {
+                const flattened = await fetchTractData(tractID);
+                setListedData(flattened);
+                setLoading(false);
+            })();
         }
     }, [tractID]);
 
-    if(loading || !listedData.length === 0){
+    if(loading || listedData.length === 0){
         return <h1>Loading tract data...</h1>
     }
     if(tractID == null){
@@ -56,9 +42,35 @@ export default function TractInfo({ tractID }) {
 
             <h2>Simple clusters</h2>
             <h3>2025 predicted simple cluster: {prediction_to_annotation[listedData[3]?.Predicted_Cluster]}</h3>
-            <h3>2010 simple cluster: {listedData[4]?.["2010_cluster"]}</h3>
-            <h3>2015 simple cluster: {listedData[5]?.["2015_cluster"]}</h3>
-            <h3>2019 simple cluster: {listedData[6]?.["2019_cluster"]}</h3>
+            <h3>2010 simple cluster: {simple_to_annotation[listedData[4]?.["2010_cluster"]]}</h3>
+            <h3>2015 simple cluster: {simple_to_annotation[listedData[5]?.["2015_cluster"]]}</h3>
+            <h3>2019 simple cluster: {simple_to_annotation[listedData[6]?.["2019_cluster"]]}</h3>
         </div>
     );
 }
+
+const fetchTractData = async (tractID) => {
+    const paddedTractID = String(tractID).padStart(11, '0'); // Ensure 11-digit match
+    const modules = await Promise.all(Object.values(csvFiles).map(importFn => importFn()));
+    const allData = modules.map(rawCsv => {
+        const results = Papa.parse(rawCsv, { header: true, skipEmptyLines: true, dynamicTyping: false });
+        return results.data.filter(row => {
+            let rowTract = row.CensusTract || row['CensusTract'];
+            if (typeof rowTract === 'number') {
+                rowTract = rowTract.toString().padStart(11, '0');
+            } else if (typeof rowTract === 'string') {
+                rowTract = rowTract.padStart(11, '0');
+            }
+            return rowTract === paddedTractID;
+        });
+    });
+    return allData.flat();
+    // const cluster2010 = allData.flat[0];
+    // const cluster2015 = allData.flat[1];
+    // const cluster2019 = allData.flat[2];
+    // const predictedCluster = allData.flat[3];
+    // const simplifiedCluster2010 = allData.flat[4];
+    // const simplifiedCluster2015 = allData.flat[5];
+    // const simplifiedCluster2019 = allData.flat[6];
+};
+

@@ -30,8 +30,8 @@ const MapData = {
         6: 2,
         4: 3,
         0: 4,
-        2: 5,
-        1: 6
+        1: 5,
+        2: 6
     },
 
     cluster_map_2010: {
@@ -39,8 +39,8 @@ const MapData = {
         4: 1,
         2: 2,
         5: 3,
-        6: 4,
-        1: 5,
+        1: 4,
+        6: 5,
         0: 6
     },
     
@@ -62,6 +62,18 @@ const MapData = {
         '0': 'Moderate decline',
         '1': 'Little/no growth',
         '2': 'Moderate growth'
+    },
+
+    simple_to_annotation:{
+        '0': 'High risk',
+        '1': 'Moderate risk',
+        '2': 'Low risk'
+    },
+
+    year_to_index:{
+        '2010': 0,
+        '2015': 1,
+        '2019': 2
     }
 }
 export default MapData
