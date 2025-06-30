@@ -32,11 +32,11 @@ const US_BOUNDS = [
 ];
 
 const MapView = () => {
+    const [selectedFips, setSelectedFips] = useState('48');
     const [currentYear, setCurrentYear] = useState(2019);
     const [colorLoading, setColorLoading] = useState(true)
     const [tractColors, setTractColors] = useState({});
     const [selectedTract, setSelectedTract] = useState(null);
-    const [loadingProgress, setLoadingProgress] = useState(0);
     const [loading, setLoading] = useState(true);
     const [filteredGeojsons, setFilteredGeojsons] = useState([]);
 
@@ -86,9 +86,9 @@ const MapView = () => {
     }
 
     useEffect(() => {
-        loadGeoJson('48');
-        fetchTractColor('48', currentYear);
-    }, []);
+        loadGeoJson(selectedFips);
+        fetchTractColor(selectedFips, currentYear);
+    }, [currentYear]);
 
     const loadGeoJson = async (fips) => {
         try {
@@ -125,6 +125,7 @@ const MapView = () => {
         }
         setLoading(true);
         setFilteredGeojsons([]);
+        setSelectedFips(state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()]);
         loadGeoJson(state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()]);
         setTractColors([]);
         fetchTractColor(state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()].toString(), currentYear)
@@ -150,10 +151,10 @@ const MapView = () => {
                 <TractInfo tractID={tractId}></TractInfo>
             },
             mouseover: () => {
-            layer.setStyle({
-                weight: 2,
-                fillOpacity: 0.8
-            });
+                layer.setStyle({
+                    weight: 2,
+                    fillOpacity: 0.8
+                });
             },
             mouseout: (e) => {
                 const layer = e.target;
@@ -191,7 +192,11 @@ const MapView = () => {
                 attribution="&copy; OpenStreetMap contributors"
                 />
                 {filteredGeojsons.map((geojson, idx) => (
-                    <GeoJSON key={idx} data={geojson} onEachFeature={onEachTract} style={getTractStyle}/>
+                    <GeoJSON 
+                        key={`${idx}-${currentYear}-${Object.keys(tractColors).length}`} 
+                        data={geojson} 
+                        onEachFeature={onEachTract} 
+                        style={getTractStyle} />
                 ))}
                     
             </MapContainer>
@@ -201,6 +206,9 @@ const MapView = () => {
                 </div>
             )}
             </div>
+            <button id="button_2019" onClick={(() =>{setCurrentYear(2019)})}>Set year to 2019</button>
+            <button id="button_2015" onClick={(() =>{setCurrentYear(2015)})}>Set year to 2015</button>
+            <button id="button_2010" onClick={(() =>{setCurrentYear(2010)})}>Set year to 2010</button>
             <div className='TractInfo'>
                 {selectedTract && <TractInfo tractID={selectedTract} />}
             </div>
