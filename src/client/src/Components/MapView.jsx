@@ -120,10 +120,6 @@ const MapView = () => {
             alert("Invalid state abbreviation (use 2-letter code, e.g., TX.)");
             return;
         }
-        if(e.target.stateSearchInput.value == "AK"){
-            alert("Alaska's tracts do not work with this model.");
-            return;
-        }
         setLoading(true);
         setFilteredGeojsons([]);
         setSelectedFips(state_abbrev_to_fips[e.target.stateSearchInput.value.toUpperCase()]);
