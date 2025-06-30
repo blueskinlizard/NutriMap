@@ -33,8 +33,26 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  margin-top: 4rem;
 }
-
+h1, h3, h2, h4, form {
+  margin-left: 1.5rem;
+}
+p {
+  margin-left: 3rem;
+}
+input {
+  outline: none;
+  padding: 0.6rem 0.6rem;
+  font-weight: bold;
+  margin: 0.8rem 0;
+  border-radius: 0.5rem;
+  font-size: 1.3rem;
+  box-sizing: border-box;
+  border: none;
+  margin-top: -0.2rem;
+  margin-bottom: -1rem;
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -65,4 +83,25 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+.tract_light{
+  font-weight: 300;
+}
+
+#footing{
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+}
+.ColorStatisticSevere {
+  color: #bd2f42;
+}
+.ColorStatisticModerate {
+  color: #d4d126;
+}
+.ColorStatisticLow {
+  color: #24bd24;
+}
+.ColorStatisticLow, .ColorStatisticModerate, .ColorStatisticSevere{
+  font-weight: 500;
 }

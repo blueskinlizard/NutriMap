@@ -9,7 +9,8 @@ function App() {
 
   return (
     <>
-      <h1>Map View</h1>
+      <h1>NutriMap</h1>
+      <h3>Census tract food desert forecasting, classification, and analysis done by machine learning</h3>
       <MapView></MapView>
     </>
   )

@@ -11,9 +11,12 @@ const simple_to_annotation = MapData.simple_to_annotation;
 const cluster_color_map = MapData.clusterColorMap;
 const year_to_index = MapData.year_to_index;
 
+const simple_to_className = MapData.simple_to_className;
+
 export default function TractInfo({ tractID }) {
     const [loading, setLoading] = useState(true);
     const [listedData, setListedData] = useState([])
+    const [listedDataLabels, setListedDataLabels] = useState([]);
     useEffect(() => {
         console.log("Spawned tractinfo for tractID: "+tractID);
         if (tractID) {
@@ -21,10 +24,27 @@ export default function TractInfo({ tractID }) {
             (async () => {
                 const flattened = await fetchTractData(tractID);
                 setListedData(flattened);
-                setLoading(false);
             })();
         }
+        return(() =>{
+            setListedData([])
+        })
     }, [tractID]);
+
+    useEffect(() => {
+        if (listedData.length < 7) {
+            console.log("listedData not ready yet:", listedData);
+            return;
+        }
+
+        const tempArray = [
+            simple_to_className[listedData[4]?.["2010_cluster"]],
+            simple_to_className[listedData[5]?.["2015_cluster"]],
+            simple_to_className[listedData[6]?.["2019_cluster"]],
+        ];
+        setListedDataLabels(tempArray);
+        setLoading(false);
+    }, [listedData]);
 
     if(loading || listedData.length === 0){
         return <h1>Loading tract data...</h1>
@@ -32,19 +52,21 @@ export default function TractInfo({ tractID }) {
     if(tractID == null){
         return <h1>No tract selected</h1>
     }
+    
     return (
         <div className="TractInfo">
-            <h1>Tract Info for: {tractID}</h1>
+            <h1>Selected Tract Information</h1>
+            <h2 className='tract_light'>Tract ID: {tractID}</h2>
             <h2>Complex clusters</h2>
-            <h3>2010 complex cluster: {map_values_2010[listedData[0]?.Cluster]}</h3>
-            <h3>2015 complex cluster: {map_values_2015[listedData[1]?.Cluster]}</h3>
-            <h3>2019 complex cluster: {map_values_2019[listedData[2]?.Cluster]}</h3>
+            <h3 className='tract_light'>2010 complex cluster: {map_values_2010[listedData[0]?.Cluster]}</h3>
+            <h3 className='tract_light'>2015 complex cluster: {map_values_2015[listedData[1]?.Cluster]}</h3>
+            <h3 className='tract_light'>2019 complex cluster: {map_values_2019[listedData[2]?.Cluster]}</h3>
 
             <h2>Simple clusters</h2>
             <h3>2025 predicted simple cluster: {prediction_to_annotation[listedData[3]?.Predicted_Cluster]}</h3>
-            <h3>2010 simple cluster: {simple_to_annotation[listedData[4]?.["2010_cluster"]]}</h3>
-            <h3>2015 simple cluster: {simple_to_annotation[listedData[5]?.["2015_cluster"]]}</h3>
-            <h3>2019 simple cluster: {simple_to_annotation[listedData[6]?.["2019_cluster"]]}</h3>
+            <h3 className='tract_light' >2010 simple cluster: <span className={`ColorStatistic${listedDataLabels[0]}`}>{simple_to_annotation[listedData[4]?.['2010_cluster']]}</span></h3>
+            <h3 className='tract_light' >2015 simple cluster: <span className={`ColorStatistic${listedDataLabels[1]}`}>{simple_to_annotation[listedData[5]?.['2015_cluster']]}</span></h3>
+            <h3 className='tract_light' >2019 simple cluster: <span className={`ColorStatistic${listedDataLabels[2]}`}>{simple_to_annotation[listedData[6]?.['2019_cluster']]}</span></h3>
         </div>
     );
 }

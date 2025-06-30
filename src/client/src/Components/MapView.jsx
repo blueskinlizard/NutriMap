@@ -39,6 +39,7 @@ const MapView = () => {
     const [selectedTract, setSelectedTract] = useState(null);
     const [loading, setLoading] = useState(true);
     const [filteredGeojsons, setFilteredGeojsons] = useState([]);
+    const [sliderIndex, setSliderIndex] = useState([2010, 2015, 2019].indexOf(currentYear));
 
     const fetchTractColor = async(stateId, year) =>{
         try {
@@ -146,7 +147,6 @@ const MapView = () => {
             click: () => {
                 const tractId = feature.properties.GEOID || 'Unknown';
                 const name = feature.properties.NAME || '';
-                alert(`Clicked on Tract ${tractId} ${name ? `(${name})` : ''}`);
                 setSelectedTract(tractId);
                 <TractInfo tractID={tractId}></TractInfo>
             },
@@ -163,11 +163,21 @@ const MapView = () => {
             }
         });
     };
+    const handleSliderChange = (e) => {
+        setSliderIndex(parseInt(e.target.value));
+    };
+
+    const handleSliderCommit = () => {
+        const selectedYear = [2010, 2015, 2019][sliderIndex];
+        setCurrentYear(selectedYear);
+        setColorLoading(true);
+    };
 
     
     
     return (
         <div>
+
             <div className="map-container" style={{ 
                 height: '100vh', 
                 width: '100vw', 
@@ -175,10 +185,33 @@ const MapView = () => {
                 overflow: 'hidden'
             }}>
                 
-            <div className="map-overlay">NutriMap</div>
             <form id="stateForm" onSubmit={handleForm}>
-                <input id="stateSearchInput" name="stateSearchInput" type="text"></input>
+                <input id="stateSearchInput" name="stateSearchInput" type="text" placeholder='2 state abbreviation, i.e "TX"'></input>
             </form>
+            <div style={{ 
+                margin: '10px', 
+                padding: '10px', 
+                zIndex: 1000, 
+                width: '300px',
+            }}>
+            <label htmlFor="yearSlider"><h2>Projection year: {[2010, 2015, 2019][sliderIndex]}</h2> </label>
+            <input
+                id="yearSlider"
+                type="range"
+                min="0"
+                max="2"
+                value={sliderIndex}
+                onChange={handleSliderChange}
+                onMouseUp={handleSliderCommit}
+                onTouchEnd={handleSliderCommit}
+                style={{ width: '100%' }}
+            />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>2010</span>
+                    <span>2015</span>
+                    <span>2019</span>
+                </div>
+            </div>
             <MapContainer
                 center={[37.8, -96]}
                 zoom={4}
@@ -206,11 +239,18 @@ const MapView = () => {
                 </div>
             )}
             </div>
-            <button id="button_2019" onClick={(() =>{setCurrentYear(2019)})}>Set year to 2019</button>
-            <button id="button_2015" onClick={(() =>{setCurrentYear(2015)})}>Set year to 2015</button>
-            <button id="button_2010" onClick={(() =>{setCurrentYear(2010)})}>Set year to 2010</button>
+            
             <div className='TractInfo'>
                 {selectedTract && <TractInfo tractID={selectedTract} />}
+            </div>
+            <div className='TractElaboration'>
+                <h2>What do clusters mean?</h2>
+                <p>Complex clusters are rated on a scale from 0 to 6, where 0 indicates a high risk of being a food desert and 6 indicates low or no risk.</p>
+                <p>Simple clusters are paraphrased variants of complex clusters.</p>
+                <h2>What is this prediction?</h2>
+                <p>While we do cluster our tracts into food desert labels, a prediction model was also built with NutriMap.</p>
+                <p>This prediction model evaluated the deltas tracts had possessed across years, along with their current simple cluster to predict future socioeconomic activity. </p>
+                <h3 id="footing">For more information, check out the "notebooks" section in the GitHub repository.</h3>
             </div>
         </div>
         

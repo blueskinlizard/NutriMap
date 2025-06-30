@@ -70,6 +70,12 @@ const MapData = {
         '2': 'Low risk'
     },
 
+    simple_to_className: {
+        '0': 'Severe',
+        '1': 'Moderate',
+        '2': 'Low'
+    },
+
     year_to_index:{
         '2010': 0,
         '2015': 1,
