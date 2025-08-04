@@ -10,7 +10,6 @@ NutriMap is a data-driven web application that identifies and visualizes food in
 Millions of Americans live in food deserts: areas with limited access to affordable and nutritious food. These regions often overlap with underserved communities and are linked to poor health outcomes, educational disparities, and long-term social challenges. While much research exists on food insecurity, accessible **tools that bridge data and decision-making remain scarce.**
 
 **NutriMap** was created to help solve that. It translates complex census data into **clear, interactive geospatial insights**, assisting local policymakers and citizens alike.
-<img width="2543" height="1267" alt="swappy-20250630-121549" src="https://github.com/user-attachments/assets/6428a5f4-a709-4ff4-936c-6da4c9501daf" />
 
 
 ---
@@ -64,3 +63,9 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 - **Post-processing pipeline** — Cluster remapping, formatting, and JSON/CSV generation
 
 ---
+## 📷 Screenshots
+<img width="2543" height="1267" alt="swappy-20250630-121549" src="https://github.com/user-attachments/assets/6428a5f4-a709-4ff4-936c-6da4c9501daf" />
+<img width="1911" height="913" alt="image" src="https://github.com/user-attachments/assets/beef5157-861b-4046-bc94-67e0048cb77a" />
+<img width="1900" height="877" alt="image" src="https://github.com/user-attachments/assets/e9ee6dc5-25a6-4c3d-95cb-efcc8017fc8f" />
+
+
