@@ -75,7 +75,7 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 
 1. **Clone the repo**
 ```bash
-git clone https://github.com/yourusername/nutrimap.git
+git clone https://github.com/blueskinlizard/nutrimap.git
 cd nutrimap
 ```
 2. **Build the image**
