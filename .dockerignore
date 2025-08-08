@@ -1,0 +1,13 @@
+node_modules
+dist
+build
+*.log
+__pycache__/
+*.pyc
+*.pyo
+
+# Let's ignore the data in our docker container, because the "usable" data for NutriMap is already within the src dir
+data/
+
+.git
+.gitignore

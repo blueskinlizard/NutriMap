@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Papa from 'papaparse';
 import MapData from "../assets/MapData";
-const csvFiles = import.meta.glob('../../../../data/processed/*.csv', { as: 'raw' });
+const csvFiles = import.meta.glob('../../public/processed/*.csv', { as: 'raw' });
+//const csvFiles = import.meta.glob('/data/processed/*.csv', { as: 'raw' });
+
 const map_values_2019  = MapData.cluster_map_2019;
 const map_values_2015  = MapData.cluster_map_2015;
 const map_values_2010  = MapData.cluster_map_2010;

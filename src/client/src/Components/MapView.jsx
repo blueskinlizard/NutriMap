@@ -13,8 +13,10 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 
-const geojsonFiles = import.meta.glob('../../../../data/geojsondata/GIS_GEOJSON_CENSUS_TRACTS/*.json', {query: '?json'});
-const colorSettingFiles = import.meta.glob('../../../../data/processed/color_settings/*.csv', { as: 'raw' });
+const geojsonFiles = import.meta.glob('../../public/geojsondata/GIS_GEOJSON_CENSUS_TRACTS/*.json', {query: '?json'});
+const colorSettingFiles = import.meta.glob('../../public/processed/color_settings/*.csv', { as: 'raw' });
+// const geojsonFiles = import.meta.glob('/data/geojsondata/GIS_GEOJSON_CENSUS_TRACTS/*.json', { query: '?json' });
+// const colorSettingFiles = import.meta.glob('/data/processed/color_settings/*.csv', { as: 'raw' });
 
 
 // Don't criticize my import parths ok 
