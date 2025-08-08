@@ -11,6 +11,8 @@ Millions of Americans live in food deserts: areas with limited access to afforda
 
 **NutriMap** was created to help solve that. It translates complex census data into **clear, interactive geospatial insights**, assisting local policymakers and citizens alike.
 
+Plus, the existing FARA interactive map could use an update😅!
+
 
 ---
 
@@ -69,4 +71,23 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 <img width="1900" height="877" alt="image" src="https://github.com/user-attachments/assets/e9ee6dc5-25a6-4c3d-95cb-efcc8017fc8f" />
 <img width="1851" height="877" alt="image" src="https://github.com/user-attachments/assets/7cb10b90-4bdf-4e5f-9a7f-a3e8bd9e1973" />
 
+## 🚀 Running NutriMap with Docker
+
+1. **Clone the repo**
+```bash
+git clone https://github.com/yourusername/nutrimap.git
+cd nutrimap
+```
+2. **Build the image**
+```bash
+docker build -t nutrimap .
+docker run -p 3000:3000 nutrimap
+```
+3. **Run the container**
+```bash
+docker run -p 3000:3000 nutrimap
+```
+4. ***Open in browser***
+
+Visit http://localhost:3000 to use NutriMap.
 
