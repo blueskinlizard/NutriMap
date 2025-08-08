@@ -67,5 +67,6 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 <img width="2543" height="1267" alt="swappy-20250630-121549" src="https://github.com/user-attachments/assets/6428a5f4-a709-4ff4-936c-6da4c9501daf" />
 <img width="1911" height="913" alt="image" src="https://github.com/user-attachments/assets/beef5157-861b-4046-bc94-67e0048cb77a" />
 <img width="1900" height="877" alt="image" src="https://github.com/user-attachments/assets/e9ee6dc5-25a6-4c3d-95cb-efcc8017fc8f" />
+<img width="1851" height="877" alt="image" src="https://github.com/user-attachments/assets/7cb10b90-4bdf-4e5f-9a7f-a3e8bd9e1973" />
 
 
