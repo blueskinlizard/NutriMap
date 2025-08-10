@@ -20,11 +20,11 @@ Plus, the existing FARA interactive map could use an update😅!
 
 NutriMap is built on a hybrid machine learning and data visualization pipeline that:
 
-- 🧩 **Clusters Houston census tracts** into six complex risk levels, and three simple ones: **High Risk**, **Moderate Risk**, and **Low Risk**, using a deep learning–based feature compressor (autoencoder) and K-Means clustering.
+- 🧩 **Clusters census tracts** into six complex risk levels, and three simple ones: **High Risk**, **Moderate Risk**, and **Low Risk**, using a deep learning–based feature compressor (autoencoder) and K-Means clustering.
 - ⏳ **Tracks change over time** (e.g., 2015 vs. 2019) to show how food insecurity evolves across neighborhoods.
 - 🗺️ **Visualizes census tracts** on an interactive Leaflet map using GeoJSON boundaries and CSV-based metadata.
 - 📊 **Displays tract-level details** in hover/click popups: median income, education levels, poverty rate, and more.
-- 🌎 **Scalable nationwide** — with an easy-to-use search bar, NutriMap’s framework can be applied to **EVERY STATE** in the U.S. to assess local food insecurity risks.
+- 🌎 **Scalable nationwide** — with an easy-to-use search bar, NutriMap’s framework can be applied to **EVERY STATE AND EVERY TRACT** in the U.S. to assess local food insecurity risks.
 
 ---
 
