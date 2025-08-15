@@ -1,11 +1,11 @@
-# NutriMap 🗺️🍎  
+# NutriMap 🗺️ 
 **Mapping and Predicting Food Insecurity Across Houston with ML and Geospatial Intelligence**
 
 NutriMap is a data-driven web application that identifies and visualizes food insecurity patterns across Houston census tracts. It uses unsupervised machine learning and public demographic datasets to cluster neighborhoods by food insecurity risk and enables community planners, nonprofits, and researchers to investigate temporal trends and future vulnerabilities.
 
 ---
 
-## 🌟 Project Motivation
+## Project Motivation
 
 Millions of Americans live in food deserts: areas with limited access to affordable and nutritious food. These regions often overlap with underserved communities and are linked to poor health outcomes, educational disparities, and long-term social challenges. While much research exists on food insecurity, accessible **tools that bridge data and decision-making remain scarce.**
 
@@ -16,7 +16,7 @@ Plus, the existing FARA interactive map could use an update😅!
 
 ---
 
-## 🧠 What NutriMap Does
+## What NutriMap Does
 
 NutriMap is built on a hybrid machine learning and data visualization pipeline that:
 
@@ -28,7 +28,7 @@ NutriMap is built on a hybrid machine learning and data visualization pipeline t
 
 ---
 
-## 🔬 Machine Learning Pipeline
+## Machine Learning Pipeline
 
 NutriMap uses a **three-step ML approach** developed in Python to both **analyze current risk levels** and **predict future tract actions**:
 
@@ -51,7 +51,7 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ### Frontend Stack:
 - **React (Vite)** — App framework for performance and flexibility
@@ -71,7 +71,7 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 <img width="1900" height="877" alt="image" src="https://github.com/user-attachments/assets/e9ee6dc5-25a6-4c3d-95cb-efcc8017fc8f" />
 <img width="1851" height="877" alt="image" src="https://github.com/user-attachments/assets/7cb10b90-4bdf-4e5f-9a7f-a3e8bd9e1973" />
 
-## 🚀 Running NutriMap with Docker
+## Running NutriMap with Docker
 
 1. **Clone the repo**
 ```bash
