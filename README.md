@@ -5,26 +5,15 @@ NutriMap is a data-driven web application that identifies and visualizes food in
 
 ---
 
-## Project Motivation
-
-Millions of Americans live in food deserts: areas with limited access to affordable and nutritious food. These regions often overlap with underserved communities and are linked to poor health outcomes, educational disparities, and long-term social challenges. While much research exists on food insecurity, accessible **tools that bridge data and decision-making remain scarce.**
-
-**NutriMap** was created to help solve that. It translates complex census data into **clear, interactive geospatial insights**, assisting local policymakers and citizens alike.
-
-Plus, the existing FARA interactive map could use an update😅!
-
-
----
-
 ## What NutriMap Does
 
 NutriMap is built on a hybrid machine learning and data visualization pipeline that:
 
-- 🧩 **Clusters census tracts** into six complex risk levels, and three simple ones: **High Risk**, **Moderate Risk**, and **Low Risk**, using a deep learning–based feature compressor (autoencoder) and K-Means clustering.
-- ⏳ **Tracks change over time** (e.g., 2015 vs. 2019) to show how food insecurity evolves across neighborhoods.
-- 🗺️ **Visualizes census tracts** on an interactive Leaflet map using GeoJSON boundaries and CSV-based metadata.
-- 📊 **Displays tract-level details** in hover/click popups: median income, education levels, poverty rate, and more.
-- 🌎 **Scalable nationwide** — with an easy-to-use search bar, NutriMap’s framework can be applied to **EVERY STATE AND EVERY TRACT** in the U.S. to assess local food insecurity risks.
+- **Clusters census tracts** into six risk levels, and three simple ones: **High Risk**, **Moderate Risk**, and **Low Risk**, using a feature compressor (autoencoder) and K-Means clustering.
+- **Tracks change over time** (e.g., 2015 vs. 2019) to show how food insecurity evolves across neighborhoods.
+- **Visualizes census tracts** on an interactive Leaflet map using GeoJSON boundaries and CSV-based metadata.
+- **Displays tract-level details** in hover/click popups: median income, education levels, poverty rate, and more.
+- **Scalable nationwide** — with an easy-to-use search bar, NutriMap’s framework can be applied to **EVERY STATE AND EVERY TRACT** in the U.S. to assess local food insecurity risks.
 
 ---
 
@@ -47,7 +36,7 @@ NutriMap uses a **three-step ML approach** developed in Python to both **analyze
 - **Purpose**: Predict which census tracts are most likely to shift into higher-risk categories in the future
 - **Benefit**: Empowers stakeholders to **anticipate food insecurity** trends rather than react to them
 
-> This pipeline was run offline using `scikit-learn`, and `PyTorch`, and the results were exported as CSVs for use in the frontend, being converted into readable data by PapaParse.
+> This pipeline was run offline using `scikit-learn`, and `PyTorch`, and the results were exported as CSVs for use in the frontend, being converted into readable data by PapaParse (so technically it's a static pipeline).
 
 ---
 
