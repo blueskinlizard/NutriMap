@@ -70,11 +70,10 @@ cd nutrimap
 2. **Build the image**
 ```bash
 docker build -t nutrimap .
-docker run -p 3000:3000 nutrimap
 ```
 3. **Run the container**
 ```bash
-docker run -p 3000:3000 nutrimap
+docker run -p 3000:80 nutrimap
 ```
 4. ***Open in browser***
 
